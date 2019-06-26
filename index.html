@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <script src="vue.js"></script>
 </head>
 <body>
     <div id="app">
-        <input type="text" v-on:input="changeTitle">
-        <p>{{title}}</p>
+      <h1 v-once>{{ title }}</h1>
+        <p>{{ sayHello() }} - <a v-bind:href="link">Google</a></p>
+        <hr>
+        <p v-html='finishedLink'></p>
     </div>
   
   <script>
@@ -15,10 +20,13 @@
         el: '#app',
         data: {
             title: 'Hello World!',
+            link: 'http://www.google.com',
+            finishedLink: '<a href="http://www.google.com">Google</a>',
         },
         methods: {
-            changeTitle: function(){
-                this.title = event.target.value;
+            sayHello: function(){
+                this.title = 'Hello!';
+                return this.title;
             }
         },
     });
