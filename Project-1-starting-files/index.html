@@ -42,7 +42,7 @@
     <section class="row log" v-if="inGame">
         <div class="small-12 columns">
             <ul>
-                <li v-for="msg in log">
+                <li v-for="msg in reverseLog">
                     {{ msg }}
                 </li>
             </ul>

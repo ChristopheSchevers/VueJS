@@ -7,23 +7,28 @@ new Vue({
         inGame: false,
         log: []
     },
+    computed: {
+        reverseLog: function(){
+            return this.log.reverse();
+        }
+    },
     watch: {
         yourHp: function(){
             if(this.yourHp <= 0){
                 this.yourHp = 0;
                 this.log.push('You lost, ya pansy!');
-                this.inGame = setTimeout(() => {
-                    return this.inGame = !this.inGame;
-                }, 3000);
+                setTimeout(function(){
+                    this.inGame = !this.inGame;
+                }.bind(this), 3000);
             } 
         },
         monsterHp: function(){
             if(this.monsterHp <= 0){
                 this.monsterHp = 0;
                 this.log.push('You won, ya magnificent bastard!');
-                this.inGame = setTimeout(() => {
-                    return this.inGame = !this.inGame;
-                }, 3000);
+                setTimeout(function(){
+                    this.inGame = !this.inGame;
+                }.bind(this), 3000);
             }
         },
         monsterTurn: function(){
