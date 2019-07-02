@@ -5,18 +5,14 @@ new Vue({
         monsterHp: 100,
         monsterTurn: false,
         inGame: false,
+        disableBtns: true,
         log: []
-    },
-    computed: {
-        reverseLog: function(){
-            return this.log.reverse();
-        }
     },
     watch: {
         yourHp: function(){
             if(this.yourHp <= 0){
                 this.yourHp = 0;
-                this.log.push('You lost, ya pansy!');
+                this.log.unshift('You lost, ya pansy!');
                 setTimeout(function(){
                     this.inGame = !this.inGame;
                 }.bind(this), 3000);
@@ -24,8 +20,9 @@ new Vue({
         },
         monsterHp: function(){
             if(this.monsterHp <= 0){
+                this.disableBtns = true;
                 this.monsterHp = 0;
-                this.log.push('You won, ya magnificent bastard!');
+                this.log.unshift('You won, ya magnificent bastard!');
                 setTimeout(function(){
                     this.inGame = !this.inGame;
                 }.bind(this), 3000);
@@ -35,6 +32,7 @@ new Vue({
             if(this.monsterTurn){
                 setTimeout(this.attack(this.yourHp), 2000);
                 this.monsterTurn = false;
+                this.disableBtns = false;
             }
         }
     },
@@ -45,45 +43,45 @@ new Vue({
             this.monsterHp = 100;
             this.inGame = true;
             this.monsterTurn = false;
+            this.disableBtns = false;
         },
         attack: function(target){
             let amount = Math.floor(Math.random() * 20);
 
             if(target == this.monsterHp){
+                this.disableBtns = true;
                 this.monsterHp -= amount;
-                this.log.push(`Player used attack and dealt ${amount} of damage.`);
+                this.log.unshift(`Player used attack and dealt ${amount} of damage.`);
                 this.monsterTurn = true;
             } else if(target == this.yourHp){
                 this.yourHp -= amount;
-                this.log.push(`Monster used attack and dealt ${amount} of damage.`);
+                this.log.unshift(`Monster used attack and dealt ${amount} of damage.`);
                 this.monsterTurn = false;
             }
         },
-        specialAttack: function(target){
+        specialAttack: function(){
             let amount = Math.floor(Math.random() * 40)+ 20;
 
-            if(target == this.monsterHp){
-                this.monsterHp -= amount;
-                this.log.push(`Player used special attack and dealt ${amount} of damage.`);
-                this.monsterTurn = true;
-            } else if(target == this.yourHp){
-                this.yourHp -= amount;
-                this.log.push(`Monster used special attack and dealt ${amount} of damage.`);
-                this.monsterTurn = false;
-            }
+            this.disableBtns = true;
+            this.monsterHp -= amount;
+            this.log.unshift(`Player used special attack and dealt ${amount} of damage.`);
+            this.monsterTurn = true;
         },
         heal: function(){
             if(this.yourHp == 100){
-                this.log.push(`You are already at full health.`);
+                this.log.unshift(`You are already at full health.`);
             } else if(this.yourHp + 40 > 100){
+                this.disableBtns = true;
                 this.yourHp = 100;
-                this.log.push(`Player used heal.`);
+                this.log.unshift(`Player used heal.`);
+                this.monsterTurn = true;
             } else {
+                this.disableBtns = true;
                 this.yourHp += 40;
-                this.log.push(`Player used heal.`);
+                this.log.unshift(`Player used heal.`);
+                this.monsterTurn = true;
             }
 
-            this.monsterTurn = true;
         },
         forfeit: function(){
             this.inGame = false;
