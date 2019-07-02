@@ -33,10 +33,10 @@
     </section>
     <section class="row controls" v-if="inGame">
         <div class="small-12 columns">
-            <button id="attack" @click="attack(monsterHp)" :disabled="disableBtns">ATTACK</button>
-            <button id="special-attack" @click="specialAttack" :disabled="disableBtns">SPECIAL ATTACK</button>
-            <button id="heal" @click="heal" :disabled="disableBtns">HEAL</button>
-            <button id="give-up" @click="forfeit" :disabled="disableBtns">GIVE UP</button>
+            <button id="attack" @click="attack(monsterHp)" :disabled="disableBtns || gameOver">ATTACK</button>
+            <button id="special-attack" @click="specialAttack" :disabled="disableBtns || gameOver">SPECIAL ATTACK</button>
+            <button id="heal" @click="heal" :disabled="disableBtns || gameOver">HEAL</button>
+            <button id="give-up" @click="forfeit" :disabled="disableBtns || gameOver">GIVE UP</button>
         </div>
     </section>
     <section class="row log" v-if="inGame">
