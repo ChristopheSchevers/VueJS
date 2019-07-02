@@ -116,7 +116,7 @@ new Vue({
         },
         forfeit: function(){
             this.inGame = false;
-            alert('You lost, ya cunt!');
+            alert(`You lost, ya quittin' cunt!`);
         }
     }
 });
