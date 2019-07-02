@@ -14,19 +14,14 @@ new Vue({
     watch: {
         monsterTurn: function(){
             if(this.monsterTurn){
-                this.attack(this.yourHp);
+                let damage = this.calculateDamage(5,12)
+
+                this.yourHp -= damage;
+                this.log.unshift(`Monster used attack and dealt ${damage} of damage.`);
+                this.monsterTurn = false;
+                this.disableBtns = false;
                 
-                if(this.yourHp <= 0){
-                    this.gameOver = true;
-                    this.yourHp = 0;
-                    this.log.unshift('You lost, ya pansy!');
-                    setTimeout(function(){
-                        this.inGame = !this.inGame;
-                    }.bind(this), 3000);
-                } else {
-                    this.monsterTurn = false;
-                    this.disableBtns = false;
-                }
+                this.checkWin(); 
             }
         }
     },
@@ -40,57 +35,28 @@ new Vue({
             this.disableBtns = false;
             this.gameOver = false;
         },
-        attack: function(target){
-            let amount = Math.floor(Math.random() * 20);
-
-            if(target == this.monsterHp){
-                this.disableBtns = true;
-                this.monsterHp -= amount;
-                this.log.unshift(`Player used attack and dealt ${amount} of damage.`);
-
-                if(this.monsterHp <= 0){
-                    this.gameOver = true;
-                    this.disableBtns = true;
-                    this.monsterHp = 0;
-                    this.log.unshift('You won, ya magnificent bastard!');
-                    setTimeout(function(){
-                        this.inGame = !this.inGame;
-                    }.bind(this), 3000);
-                } else {
-                    setTimeout(function(){
-                        this.monsterTurn = true;
-                    }.bind(this), this.monsterResponseTime);
-                }
-
-            } else if(target == this.yourHp){
-                this.yourHp -= amount;
-                this.log.unshift(`Monster used attack and dealt ${amount} of damage.`);
-                this.monsterTurn = false;
-            }
-
-        },
-        specialAttack: function(){
-            let amount = Math.floor(Math.random() * 40)+ 20;
+        attack: function(){
+            let damage = this.calculateDamage(3,10);
 
             this.disableBtns = true;
-            this.monsterHp -= amount;
-            this.log.unshift(`Player used special attack and dealt ${amount} of damage.`);
-            this.specialCldwn = true;
+            this.monsterHp -= damage;
+            this.log.unshift(`Player used attack and dealt ${damage} of damage.`);
 
-            if(this.monsterHp <= 0){
-                this.gameOver = true;
-                this.disableBtns = true;
-                this.monsterHp = 0;
-                this.log.unshift('You won, ya magnificent bastard!');
-                setTimeout(function(){
-                    this.inGame = !this.inGame;
-                }.bind(this), 3000);
+            if(this.checkWin()){
+                return;
             } else {
                 setTimeout(function(){
                     this.monsterTurn = true;
-                }.bind(this), 1000);
+                }.bind(this),this.monsterResponseTime);
             }
+        },
+        specialAttack: function(){
+            let damage = Math.floor(Math.random() * 40)+ 20;
 
+            this.disableBtns = true;
+            this.monsterHp -= damage;
+            this.log.unshift(`Player used special attack and dealt ${damage} of damage.`);
+            this.specialCldwn = true;
         },
         heal: function(){
             if(this.yourHp == 100){
@@ -117,6 +83,26 @@ new Vue({
         forfeit: function(){
             this.inGame = false;
             alert(`You lost, ya quittin' cunt!`);
+        },
+        calculateDamage: function(min,max){
+            return Math.max(Math.floor(Math.random() * max) + 1, min);
+        },
+        checkWin: function(){
+            if(this.monsterHp <= 0){
+                if(confirm('You won, ya magnificent bastard! Wanna fight again?')){
+                    this.startGame();
+                } else {
+                    this.inGame = false;
+                }           
+                return true     
+            } else if(this.yourHp <= 0){
+                if(confirm('You lost, ya pansy! Wanna try again?')){
+                    this.startGame();
+                } else {
+                    this.inGame = false;
+                }
+                return false;
+            }
         }
     }
 });

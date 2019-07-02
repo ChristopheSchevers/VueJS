@@ -33,7 +33,7 @@
     </section>
     <section class="row controls" v-else>
         <div class="small-12 columns">
-            <button id="attack" @click="attack(monsterHp)" :disabled="disableBtns || gameOver">ATTACK</button>
+            <button id="attack" @click="attack" :disabled="disableBtns || gameOver">ATTACK</button>
             <button id="special-attack" @click="specialAttack" :disabled="disableBtns || gameOver">SPECIAL ATTACK</button>
             <button id="heal" @click="heal" :disabled="disableBtns || gameOver">HEAL</button>
             <button id="give-up" @click="forfeit" :disabled="disableBtns || gameOver">GIVE UP</button>
