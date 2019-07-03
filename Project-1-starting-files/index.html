@@ -39,11 +39,11 @@
             <button id="give-up" @click="forfeit" :disabled="disableBtns || gameOver">GIVE UP</button>
         </div>
     </section>
-    <section class="row log" v-if="inGame">
+    <section class="row log" v-if="log.length > 0">
         <div class="small-12 columns">
             <ul>
-                <li v-for="msg in log">
-                    {{ msg }}
+                <li v-for="msg in log" :class="{'player-turn': msg.isPlayer, 'monster-turn': !msg.isPlayer}">
+                    {{ msg.text }}
                 </li>
             </ul>
         </div>
