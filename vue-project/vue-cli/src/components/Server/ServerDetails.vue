@@ -20,3 +20,10 @@
     }
   }
 </script>
+
+<style lang="scss">
+  .row {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

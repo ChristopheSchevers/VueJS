@@ -5,10 +5,10 @@
 </template>
 
 <script>
-  import ServerStatus from './ServerStatus'
+  import ServerDetails from './ServerDetails.vue'
   export default {
     components: {
-      'app-server-status': ServerStatus
+      'app-server-status': ServerDetails
     }
   }
 </script>
