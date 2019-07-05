@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
-import Servers from './components/Server/Servers.vue'
 
-Vue.component('app-servers', Servers);
+export const eventBus = new Vue({
+  methods: {
+    changeAge(age) {
+      this.$emit('ageWasEdited',age);
+    }
+  }
+});
 
 new Vue({
   el: '#app',
